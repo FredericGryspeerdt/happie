@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find /c/dev/happie -maxdepth 3 -type d ! -path */node_modules* ! -path */.angular* ! -path */dist* ! -path */.git*)"
+    ]
+  }
+}
