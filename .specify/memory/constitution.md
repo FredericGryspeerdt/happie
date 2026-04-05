@@ -1,6 +1,6 @@
 <!--
 Sync Impact Report
-- Version change: 1.5.0 → 1.6.0 (Documentation Separation of Concerns expanded)
+- Version change: 1.6.0 → 1.6.1 (remove NON-NEGOTIABLE label from Principle I)
 - Added principles:
   - VII. Collaborative by Default
   - VIII. Feature Isolation
@@ -41,7 +41,7 @@ activity MUST NOT be added.
 
 ## Core Principles
 
-### I. Accessibility-First (NON-NEGOTIABLE)
+### I. Accessibility-First
 
 Every component, page, and interaction MUST meet WCAG AA standards
 and pass all AXE automated checks before merge.
@@ -274,4 +274,4 @@ conflicts with a principle above, the constitution wins.
 **Compliance review**: Every PR review MUST include a check
 that the changes do not violate any active principle.
 
-**Version**: 1.6.0 | **Ratified**: 2026-04-04 | **Last Amended**: 2026-04-05
+**Version**: 1.6.1 | **Ratified**: 2026-04-04 | **Last Amended**: 2026-04-05
