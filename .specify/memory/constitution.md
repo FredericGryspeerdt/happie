@@ -1,6 +1,6 @@
 <!--
 Sync Impact Report
-- Version change: 1.3.0 → 1.4.0 (Angular Material as standard UI library)
+- Version change: 1.4.0 → 1.5.0 (Documentation & Process Rules section added)
 - Added principles:
   - VII. Collaborative by Default
   - VIII. Feature Isolation
@@ -209,6 +209,23 @@ patterns, and template conventions, see **CLAUDE.md**.
   Large PRs MUST be split unless technically inseparable.
 - Run `git pull --rebase` before pushing to keep history clean.
 
+## Documentation & Process Rules
+
+- **Separation of Concerns**:
+  - `spec.md` (Product Perspective): MUST remain technology-agnostic.
+    Focus on "What" and "Why" — user stories, acceptance criteria,
+    and measurable outcomes only.
+  - `plan.md` (Engineering Perspective): Contains all technical
+    details and "How" — architecture decisions, data models,
+    contracts, and implementation approach.
+  - Technical decisions MUST NOT bleed into `spec.md`; product
+    requirements MUST NOT bleed into `plan.md`.
+
+- **Commits**: All commits MUST follow
+  [Conventional Commits](https://conventionalcommits.org)
+  (e.g., `feat:`, `fix:`, `docs:`, `chore:`). This applies to
+  both manual and AI-assisted changes.
+
 ## Governance
 
 This constitution is the highest-authority document for Happie
@@ -230,4 +247,4 @@ conflicts with a principle above, the constitution wins.
 **Compliance review**: Every PR review MUST include a check
 that the changes do not violate any active principle.
 
-**Version**: 1.4.0 | **Ratified**: 2026-04-04 | **Last Amended**: 2026-04-05
+**Version**: 1.5.0 | **Ratified**: 2026-04-04 | **Last Amended**: 2026-04-05
