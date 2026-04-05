@@ -1,50 +1,222 @@
-# [PROJECT_NAME] Constitution
-<!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
+<!--
+Sync Impact Report
+- Version change: 1.2.0 → 1.3.0 (dependency versioning policy added)
+- Added principles:
+  - VII. Collaborative by Default
+  - VIII. Feature Isolation
+- Modified principles:
+  - II. Signal-Driven Reactivity — slimmed to high-level intent;
+    implementation rules deferred to CLAUDE.md
+  - III. Standalone & Minimal Components — slimmed to high-level intent;
+    implementation rules deferred to CLAUDE.md
+- Modified sections:
+  - Technology Constraints — reduced to policy-level; references CLAUDE.md
+  - Development Workflow — expanded lifecycle guidance; removed
+    duplication with Principle I
+- Removed sections: none
+- Templates requiring updates:
+  - .specify/templates/plan-template.md — ✅ no updates needed
+  - .specify/templates/spec-template.md — ✅ no updates needed
+  - .specify/templates/tasks-template.md — ✅ no updates needed
+  - .specify/templates/commands/ — ✅ no command files exist
+  - AGENTS.md — ✅ no updates needed
+- Follow-up TODOs: none
+-->
+
+# Happie Constitution
+
+## Mission
+
+Happie is a household management tool that simplifies daily
+domestic life. It provides shared features — such as todo lists,
+shopping lists, and energy consumption dashboards — that all
+members of a household can access and act on together.
+
+**Target users**: Members of a shared household (families,
+housemates, partners).
+
+**Guiding goal**: Every feature MUST reduce friction in a real
+household task. Features that do not map to a concrete daily
+activity MUST NOT be added.
 
 ## Core Principles
 
-### [PRINCIPLE_1_NAME]
-<!-- Example: I. Library-First -->
-[PRINCIPLE_1_DESCRIPTION]
-<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
+### I. Accessibility-First (NON-NEGOTIABLE)
 
-### [PRINCIPLE_2_NAME]
-<!-- Example: II. CLI Interface -->
-[PRINCIPLE_2_DESCRIPTION]
-<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
+Every component, page, and interaction MUST meet WCAG AA standards
+and pass all AXE automated checks before merge.
 
-### [PRINCIPLE_3_NAME]
-<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
-[PRINCIPLE_3_DESCRIPTION]
-<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
+- All interactive elements MUST have proper focus management
+  and visible focus indicators.
+- Color contrast MUST meet WCAG AA minimum ratios (4.5:1 for
+  normal text, 3:1 for large text).
+- ARIA attributes MUST be applied where native HTML semantics
+  are insufficient.
+- Keyboard navigation MUST work for all interactive flows.
+- Accessibility violations block merges — no exceptions.
 
-### [PRINCIPLE_4_NAME]
-<!-- Example: IV. Integration Testing -->
-[PRINCIPLE_4_DESCRIPTION]
-<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
+**Rationale**: Accessibility is a baseline quality attribute, not
+a feature. Retrofitting it is orders of magnitude harder than
+building it in from the start.
 
-### [PRINCIPLE_5_NAME]
-<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
-[PRINCIPLE_5_DESCRIPTION]
-<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
+### II. Signal-Driven Reactivity
 
-## [SECTION_2_NAME]
-<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
+Component state MUST be modelled with Angular Signals. Observable
+patterns are permitted only at service boundaries (HTTP, router).
+Derived state MUST be expressed with `computed()` — never
+duplicated or manually synced. All transformations MUST be pure.
 
-[SECTION_2_CONTENT]
-<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
+See CLAUDE.md for the specific signal API rules.
 
-## [SECTION_3_NAME]
-<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
+**Rationale**: Signals provide fine-grained, synchronous
+reactivity that aligns with OnPush change detection and
+eliminates common subscription-leak bugs.
 
-[SECTION_3_CONTENT]
-<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
+### III. Standalone & Minimal Components
+
+Every component MUST be standalone and follow the
+single-responsibility principle. Components MUST use OnPush
+change detection. Dependencies MUST be injected via `inject()`.
+
+See CLAUDE.md for the full list of API choices and prohibited
+patterns.
+
+**Rationale**: Standalone components eliminate NgModule
+indirection. OnPush + signals guarantee predictable rendering.
+Consistent API choices reduce cognitive load across the codebase.
+
+### IV. Type Safety
+
+TypeScript strict mode MUST remain enabled. The `any` type is
+PROHIBITED in application code.
+
+- Prefer type inference when the type is obvious from context.
+- Use `unknown` when the type is genuinely uncertain, then narrow
+  with guards.
+- Generic constraints MUST be as narrow as practical.
+- External API responses MUST be validated or typed at the
+  boundary.
+
+**Rationale**: Strict typing catches entire categories of bugs
+at compile time and makes refactoring safe.
+
+### V. Simplicity & Restraint
+
+Every abstraction MUST justify its existence with a concrete,
+current need. Speculative design is PROHIBITED.
+
+- Do NOT create helpers, utilities, or abstractions for one-time
+  operations.
+- Three similar lines of code are preferable to a premature
+  abstraction.
+- Do NOT add features, configuration, or extensibility points
+  beyond what is explicitly requested.
+- Prefer native Angular/platform APIs over third-party libraries
+  when capability is equivalent.
+
+**Rationale**: Unused abstraction is negative value — it adds
+maintenance cost, cognitive overhead, and indirection without
+delivering benefit.
+
+### VI. Test Discipline
+
+All features MUST have corresponding test coverage using Vitest.
+Tests MUST verify behavior, not implementation details.
+
+- Use Vitest as the sole test runner.
+- Test user-visible behavior and public APIs.
+- Prefer integration-style component tests over isolated unit
+  tests where practical.
+- Tests MUST run in CI and block merge on failure.
+
+**Rationale**: Tests are a safety net for refactoring and a
+living specification. Testing behavior over implementation keeps
+tests stable across refactors.
+
+### VII. Collaborative by Default
+
+Happie is a multi-user product. Every feature MUST be designed
+with shared access in mind from the start.
+
+- Data that belongs to a household MUST be accessible to all
+  members of that household.
+- UI state MUST reflect the current server state — stale or
+  member-local views are not acceptable for shared data.
+- Conflict handling MUST be considered at design time for any
+  feature where two members could act on the same data
+  simultaneously.
+- Features MUST NOT assume a single owner or single actor.
+
+**Rationale**: Collaborative behaviour is Happie's defining
+characteristic. Designing for a single user and retrofitting
+multi-user is one of the most expensive architectural mistakes
+possible.
+
+### VIII. Feature Isolation
+
+Each Happie feature (e.g., shopping list, energy dashboard) MUST
+be a self-contained, independently navigable module.
+
+- Each feature MUST be implemented as a lazy-loaded Angular
+  route module.
+- Features MUST NOT import directly from other feature modules.
+  Shared logic MUST live in a dedicated shared module.
+- A feature MUST be deliverable and demonstrable independently
+  without requiring other features to be complete.
+- Adding or removing a feature MUST NOT break other features.
+
+**Rationale**: Happie's feature set will grow over time. Isolation
+keeps the codebase navigable, enables independent delivery, and
+prevents one feature's complexity from leaking into others.
+
+## Technology Constraints
+
+Happie uses Angular 21+ with strict TypeScript, Tailwind CSS 4
+for styling, and Vitest as the test runner. These choices are
+non-negotiable for the lifetime of this constitution version.
+
+**Dependency versioning**: All dependencies MUST be kept on their
+latest stable release. When adding a new dependency, the latest
+stable version MUST be used. Pinning to an older version MUST be
+justified in the PR with a documented reason and a remediation
+plan (e.g., a linked issue to upgrade once a blocker is resolved).
+Stale version pins MUST be reviewed and resolved within 30 days.
+
+For the authoritative list of framework API choices, prohibited
+patterns, and template conventions, see **CLAUDE.md**.
+
+## Development Workflow
+
+- All PRs MUST pass linting, formatting, and test suites in CI
+  before merge.
+- All PRs MUST include a constitution compliance check in the
+  review (see Governance).
+- Features MUST be developed on a dedicated branch and delivered
+  via a pull request — direct commits to `develop` or `main` are
+  PROHIBITED.
+- Each PR SHOULD be scoped to a single feature or concern.
+  Large PRs MUST be split unless technically inseparable.
+- Run `git pull --rebase` before pushing to keep history clean.
 
 ## Governance
-<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
 
-[GOVERNANCE_RULES]
-<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
+This constitution is the highest-authority document for Happie
+development decisions. When a PR, design choice, or code review
+conflicts with a principle above, the constitution wins.
 
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
-<!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->
+**Amendment procedure**:
+
+1. Propose the change with rationale in a dedicated PR or issue.
+2. Document the before/after principle text.
+3. Include a migration plan if existing code is affected.
+4. Update the constitution version per SemVer:
+   - MAJOR: Principle removed or fundamentally redefined.
+   - MINOR: New principle added or existing one materially
+     expanded.
+   - PATCH: Clarification, wording, or typo fix.
+5. Update `LAST_AMENDED_DATE` to the merge date.
+
+**Compliance review**: Every PR review MUST include a check
+that the changes do not violate any active principle.
+
+**Version**: 1.3.0 | **Ratified**: 2026-04-04 | **Last Amended**: 2026-04-05
