@@ -1,6 +1,6 @@
 <!--
 Sync Impact Report
-- Version change: 1.4.0 → 1.5.0 (Documentation & Process Rules section added)
+- Version change: 1.5.0 → 1.6.0 (Documentation Separation of Concerns expanded)
 - Added principles:
   - VII. Collaborative by Default
   - VIII. Feature Isolation
@@ -211,20 +211,47 @@ patterns, and template conventions, see **CLAUDE.md**.
 
 ## Documentation & Process Rules
 
-- **Separation of Concerns**:
-  - `spec.md` (Product Perspective): MUST remain technology-agnostic.
-    Focus on "What" and "Why" — user stories, acceptance criteria,
-    and measurable outcomes only.
-  - `plan.md` (Engineering Perspective): Contains all technical
-    details and "How" — architecture decisions, data models,
-    contracts, and implementation approach.
-  - Technical decisions MUST NOT bleed into `spec.md`; product
-    requirements MUST NOT bleed into `plan.md`.
+### Documentation Separation of Concerns
 
-- **Commits**: All commits MUST follow
-  [Conventional Commits](https://conventionalcommits.org)
-  (e.g., `feat:`, `fix:`, `docs:`, `chore:`). This applies to
-  both manual and AI-assisted changes.
+Documentation follows strict separation between WHAT/WHY
+(`spec.md`) and HOW (`plan.md`):
+
+- **`spec.md` — Product Perspective (What & Why)**:
+  - MUST remain technology-agnostic.
+  - NO implementation details (frameworks, libraries, architecture
+    patterns).
+  - NO technical terminology except domain terms.
+  - Focus: User Stories, Requirements, Success Criteria.
+  - Question: *"What should the system do and why?"*
+  - Target audience: Product Owner, Stakeholders, Domain Experts.
+
+- **`plan.md` — Engineering Perspective (How)**:
+  - Contains ALL technical details and implementation decisions.
+  - Specifies frameworks, libraries, architecture patterns.
+  - Defines Technical Context (Language, Dependencies, Storage,
+    Testing).
+  - Documents Constitution Checks and Complexity Tracking.
+  - Question: *"How do we implement the requirements from
+    spec.md?"*
+  - Target audience: Developers, Tech Leads, Code Reviewers.
+
+- **Violations & Enforcement**:
+  - Technical details in `spec.md` are a blocker for merge.
+  - `spec.md` reviews MUST verify technology-agnosticism.
+  - All "HOW" discussions belong in `plan.md` or code comments.
+  - Constitution Checks in `plan.md` validate separation.
+
+**Rationale**: Clear separation prevents mixing of business
+requirements and technical decisions. `spec.md` remains
+maintainable even when the tech stack changes. Product
+discussions focus on user value instead of implementation.
+
+### Commits
+
+All commits MUST follow
+[Conventional Commits](https://conventionalcommits.org)
+(e.g., `feat:`, `fix:`, `docs:`, `chore:`). This applies to
+both manual and AI-assisted changes.
 
 ## Governance
 
@@ -247,4 +274,4 @@ conflicts with a principle above, the constitution wins.
 **Compliance review**: Every PR review MUST include a check
 that the changes do not violate any active principle.
 
-**Version**: 1.5.0 | **Ratified**: 2026-04-04 | **Last Amended**: 2026-04-05
+**Version**: 1.6.0 | **Ratified**: 2026-04-04 | **Last Amended**: 2026-04-05
