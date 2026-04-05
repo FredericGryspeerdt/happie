@@ -1,6 +1,6 @@
 <!--
 Sync Impact Report
-- Version change: 1.2.0 → 1.3.0 (dependency versioning policy added)
+- Version change: 1.3.0 → 1.4.0 (Angular Material as standard UI library)
 - Added principles:
   - VII. Collaborative by Default
   - VIII. Feature Isolation
@@ -111,6 +111,9 @@ current need. Speculative design is PROHIBITED.
   abstraction.
 - Do NOT add features, configuration, or extensibility points
   beyond what is explicitly requested.
+- Prefer Angular Material components over custom implementations.
+  A custom component is only justified when Angular Material
+  provably cannot meet the requirement.
 - Prefer native Angular/platform APIs over third-party libraries
   when capability is equivalent.
 
@@ -175,6 +178,14 @@ Happie uses Angular 21+ with strict TypeScript, Tailwind CSS 4
 for styling, and Vitest as the test runner. These choices are
 non-negotiable for the lifetime of this constitution version.
 
+**UI component library**: Angular Material (https://material.angular.dev)
+is the standard component library for Happie. It MUST be used for
+any UI element it covers (buttons, forms, dialogs, navigation,
+tables, etc.). Custom components MUST NOT be built when an Angular
+Material equivalent exists. When Angular Material does not cover a
+need, a custom component MAY be created — this MUST be documented
+in the PR explaining why Material was insufficient.
+
 **Dependency versioning**: All dependencies MUST be kept on their
 latest stable release. When adding a new dependency, the latest
 stable version MUST be used. Pinning to an older version MUST be
@@ -219,4 +230,4 @@ conflicts with a principle above, the constitution wins.
 **Compliance review**: Every PR review MUST include a check
 that the changes do not violate any active principle.
 
-**Version**: 1.3.0 | **Ratified**: 2026-04-04 | **Last Amended**: 2026-04-05
+**Version**: 1.4.0 | **Ratified**: 2026-04-04 | **Last Amended**: 2026-04-05
