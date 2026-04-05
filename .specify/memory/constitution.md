@@ -1,6 +1,6 @@
 <!--
 Sync Impact Report
-- Version change: 1.6.0 → 1.6.1 (remove NON-NEGOTIABLE label from Principle I)
+- Version change: 1.6.1 → 1.7.0 (new principle: IX. Mobile-First)
 - Added principles:
   - VII. Collaborative by Default
   - VIII. Feature Isolation
@@ -172,6 +172,32 @@ be a self-contained, independently navigable module.
 keeps the codebase navigable, enables independent delivery, and
 prevents one feature's complexity from leaking into others.
 
+### IX. Mobile-First
+
+Happie is designed for mobile devices first. Every UI feature
+MUST be fully functional and well-designed on small screens
+before being adapted for larger ones.
+
+- Layouts MUST be designed for mobile viewports first; desktop
+  and tablet adaptations are enhancements, not the baseline.
+- Touch targets MUST be large enough for comfortable finger
+  interaction (minimum 44×44px per WCAG guidelines).
+- Navigation and interactions MUST be thumb-friendly — primary
+  actions MUST be reachable without stretching.
+- Content MUST be readable without horizontal scrolling on
+  standard mobile viewports.
+- Performance MUST be optimised for mobile networks — avoid
+  heavy assets, prefer lazy loading, and minimise initial bundle
+  size.
+- Tailwind CSS responsive prefixes (`sm:`, `md:`, `lg:`) MUST
+  be applied mobile-outward (base styles = mobile, prefixes =
+  larger screens).
+
+**Rationale**: Household tasks are performed on the go — in the
+kitchen, at the supermarket, around the home. A desktop-first
+design consistently produces poor mobile experiences.
+Mobile-first forces the right constraints from the start.
+
 ## Technology Constraints
 
 Happie uses Angular 21+ with strict TypeScript, Tailwind CSS 4
@@ -274,4 +300,4 @@ conflicts with a principle above, the constitution wins.
 **Compliance review**: Every PR review MUST include a check
 that the changes do not violate any active principle.
 
-**Version**: 1.6.1 | **Ratified**: 2026-04-04 | **Last Amended**: 2026-04-05
+**Version**: 1.7.0 | **Ratified**: 2026-04-04 | **Last Amended**: 2026-04-05
