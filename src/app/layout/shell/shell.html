@@ -1,0 +1,60 @@
+<mat-toolbar [class.toolbar-hidden]="isScrolledDown()" aria-label="Happie app bar">
+  @if (!isLargeScreen()) {
+    <button mat-icon-button
+            id="nav-drawer-toggle"
+            [attr.aria-expanded]="isDrawerOpen()"
+            aria-controls="nav-drawer"
+            aria-label="Open navigation menu"
+            (click)="toggleDrawer()">
+      <mat-icon>menu</mat-icon>
+    </button>
+  }
+  <span>Happie</span>
+</mat-toolbar>
+
+<mat-sidenav-container>
+  <mat-sidenav #drawer
+               id="nav-drawer"
+               [mode]="isLargeScreen() ? 'side' : 'over'"
+               [opened]="isLargeScreen() || isDrawerOpen()"
+               aria-label="Navigation drawer"
+               (backdropClick)="closeDrawer()">
+    <mat-nav-list>
+      @for (section of navSections; track section.id) {
+        <a mat-list-item
+           [routerLink]="section.route"
+           routerLinkActive
+           #drawerRla="routerLinkActive"
+           [activated]="drawerRla.isActive"
+           [attr.aria-current]="drawerRla.isActive ? 'page' : null"
+           (click)="closeDrawer()">
+          <mat-icon matListItemIcon>{{ section.icon }}</mat-icon>
+          <span matListItemTitle>{{ section.label }}</span>
+        </a>
+      }
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <div class="content-area">
+      <router-outlet />
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>
+
+@if (!isLargeScreen()) {
+  <nav mat-tab-nav-bar [tabPanel]="tabPanel" aria-label="Main navigation">
+    @for (section of navSections; track section.id) {
+      <a mat-tab-link
+         [routerLink]="section.route"
+         routerLinkActive
+         #bottomRla="routerLinkActive"
+         [active]="bottomRla.isActive"
+         [attr.aria-current]="bottomRla.isActive ? 'page' : null">
+        <mat-icon>{{ section.icon }}</mat-icon>
+        {{ section.label }}
+      </a>
+    }
+  </nav>
+  <mat-tab-nav-panel #tabPanel />
+}
