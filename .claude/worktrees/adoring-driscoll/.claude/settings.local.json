@@ -10,7 +10,9 @@
       "Bash(npx ng:*)",
       "Bash(npm install:*)",
       "Bash(npm test:*)",
-      "Bash(npm run:*)"
+      "Bash(npm run:*)",
+      "mcp__Claude_Preview__preview_start",
+      "Bash(npx tsc:*)"
     ]
   }
 }

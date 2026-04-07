@@ -51,9 +51,11 @@ export class ShellComponent {
   constructor() {
     let lastScrollTop = 0;
     this.scrollDispatcher.scrolled().pipe(
-      map(() => {
-        const el = document.documentElement;
-        const current = el.scrollTop || document.body.scrollTop;
+      map((scrollable) => {
+        const el = scrollable
+          ? scrollable.getElementRef().nativeElement as HTMLElement
+          : document.documentElement;
+        const current = el.scrollTop;
         const scrolledDown = current > lastScrollTop && current > 56;
         lastScrollTop = current <= 0 ? 0 : current;
         return scrolledDown;

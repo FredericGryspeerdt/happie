@@ -1,15 +1,15 @@
 :host {
-  display: flex;
-  flex-direction: column;
+  display: block;
   height: 100%;
 }
 
 mat-toolbar {
-  position: sticky;
+  position: fixed;
   top: 0;
+  left: 0;
+  right: 0;
   z-index: 100;
   transition: transform 0.3s ease;
-  flex-shrink: 0;
 }
 
 mat-toolbar.toolbar-hidden {
@@ -17,8 +17,14 @@ mat-toolbar.toolbar-hidden {
 }
 
 mat-sidenav-container {
-  flex: 1;
-  overflow: auto;
+  height: 100%;
+}
+
+/* Padding inside the scroll container — fixed height, never changes.
+   Scrolls out of view naturally as the user goes down, giving the toolbar
+   space without ever changing the scroll container's total height. */
+.content-area {
+  padding-top: var(--mat-toolbar-container-height, 64px);
 }
 
 nav[mat-tab-nav-bar] {
