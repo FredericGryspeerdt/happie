@@ -39,3 +39,4 @@ jobs:
           project: ${{ vars.PROJECT_NAME }} # Set this in repo Settings → Variables
           entrypoint: serve.ts
           root: dist/happie/browser
+          token: ${{ secrets.DENO_DEPLOY_TOKEN }} # Only needed if OIDC is not configured
