@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
 
     permissions:
-      id-token: write   # Required for Deno Deploy OIDC — no secret needed
+      id-token: write # Required for Deno Deploy OIDC — no secret needed
       contents: read
 
     steps:
@@ -22,7 +22,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'npm'         # Caches node_modules keyed on package-lock.json
+          cache: 'npm' # Caches node_modules keyed on package-lock.json
 
       - name: Install dependencies
         run: npm ci
@@ -36,6 +36,6 @@ jobs:
       - name: Deploy to Deno Deploy
         uses: denoland/deployctl@v1
         with:
-          project: ${{ vars.DENO_PROJECT }}   # Set this in repo Settings → Variables
+          project: ${{ vars.PROJECT_NAME }} # Set this in repo Settings → Variables
           entrypoint: serve.ts
           root: dist/happie/browser
