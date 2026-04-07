@@ -62,32 +62,37 @@ specs/001-app-skeleton/
 src/
 ├── index.html
 ├── main.ts
-├── styles.css                           # Global Tailwind + Material theme
+├── styles.css                           # Global Tailwind import
+├── material-theme.scss                  # Angular Material M3 theme (loaded via angular.json)
 └── app/
     ├── app.ts                           # Root component — hosts <router-outlet>
     ├── app.html
     ├── app.css
     ├── app.config.ts                    # provideRouter, provideAnimationsAsync
-    ├── app.routes.ts                    # Top-level lazy routes → layout shell
+    ├── app.routes.ts                    # Top-level lazy routes → ShellComponent layout wrapper
     ├── layout/
     │   └── shell/
     │       ├── shell.ts                 # ShellComponent — sidenav container + toolbar + bottom nav
     │       ├── shell.html
-    │       └── shell.css
+    │       ├── shell.css
+    │       └── shell.spec.ts
+    ├── shared/
+    │   └── navigation/
+    │       └── nav-section.model.ts     # NavSection interface + NAV_SECTIONS constant
     └── features/
         ├── home/
         │   ├── home.ts                  # Placeholder component
-        │   ├── home.html
-        │   └── home.routes.ts
+        │   └── home.html
         ├── shopping/
         │   ├── shopping.ts
-        │   ├── shopping.html
-        │   └── shopping.routes.ts
+        │   └── shopping.html
         └── tasks/
             ├── tasks.ts
-            ├── tasks.html
-            └── tasks.routes.ts
+            └── tasks.html
 ```
+
+> **Note**: No per-feature `*.routes.ts` files are needed. All routing is defined in
+> `app.routes.ts` using `loadComponent` for each lazy route directly.
 
 **Structure Decision**: Single Angular project. Shell layout isolated in `layout/shell/`.
 Features isolated in `features/` as lazy-loaded route components. No shared service
@@ -136,13 +141,18 @@ The schematic (`ng add @angular/material`) configures:
 
 Navigation state is managed via signals inside `ShellComponent`:
 
-- `activeRoute: Signal<string>` — derived from router events
 - `isDrawerOpen: Signal<boolean>` — toggled by menu button
 - `isLargeScreen: Signal<boolean>` — from `BreakpointObserver` via `toSignal()`
 - `isScrolledDown: Signal<boolean>` — from `ScrollDispatcher` scroll direction tracking
 
-The sidenav mode and the bottom nav visibility are CSS-driven at the 1024px breakpoint
-(Tailwind `lg:` prefix), with signal state used to open/close the drawer imperatively.
+Active section state is driven by Angular's `RouterLinkActive` directive (`#rla="routerLinkActive"`
+template variable) — no manual signal is needed. `[active]="rla.isActive"` on `MatTabLink` and
+`[activated]="rla.isActive"` on `mat-list-item` keep both navs in sync automatically.
+
+The hamburger button and bottom nav are conditionally rendered with `@if (!isLargeScreen())`
+(Angular native control flow) rather than Tailwind `lg:hidden`. This removes the elements from
+the DOM entirely on desktop, which is preferable for accessibility: hidden-but-present elements
+can still receive keyboard focus with CSS-only approaches.
 
 ### Routing
 
@@ -162,8 +172,12 @@ layout wrapper with child routes for each section.
 - Drawer open/close button: `aria-expanded`, `aria-controls`
 - Bottom nav links: `aria-current="page"` on active item
 - Focus is trapped inside the drawer when open on mobile (Material handles this)
-- Keyboard: Escape closes the drawer; Tab cycles through nav items
-- Vitest + `@axe-core/angular` (or equivalent) runs AXE checks in tests
+- Keyboard: Escape closes the drawer (host `document:keydown.escape` binding); Tab cycles through nav items
+- `aria-label` on toolbar, sidenav, and hamburger button; `aria-current="page"` on active nav items
+- Keyboard validation strategy: Escape key tested explicitly in `shell.spec.ts`; Tab order and
+  Enter activation rely on Angular Material's built-in keyboard support, validated end-to-end by
+  the AXE zero-violations assertion in `shell.spec.ts`
+- Vitest + `axe-core` (direct API, not `@axe-core/angular`) runs AXE checks in tests
 
 ### Data Model
 

@@ -2,7 +2,7 @@
 
 **Feature Branch**: `001-app-skeleton`
 **Created**: 2026-04-05
-**Status**: Draft
+**Status**: Implemented
 **Input**: User description: "Build the app skeleton. The goal is to have a working app, without features yet, but with all the UI/UX elements in place (e.g. navigation drawer, app bar etc.)."
 
 ## User Scenarios & Testing *(mandatory)*

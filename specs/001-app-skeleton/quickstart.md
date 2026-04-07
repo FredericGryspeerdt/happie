@@ -86,3 +86,42 @@ npm run build
 # Check that initial bundle stays within Angular budget limits:
 # initial: < 500kB (warning), < 1MB (error)
 ```
+
+## Manual Verification Checklists
+
+The following success criteria are verified manually (no automated test covers them):
+
+### SC-001 — Navigation within 2 taps
+
+From any section, confirm you can reach any other section in ≤ 2 taps:
+
+- [ ] From Home → Shopping: 1 tap (bottom nav)
+- [ ] From Home → Tasks: 1 tap (bottom nav)
+- [ ] From any section → Home: 1 tap (bottom nav)
+
+*On desktop all sections are 1 click away in the persistent sidebar — SC-001 is satisfied by
+design.*
+
+### SC-002 — Load time < 2 seconds (mobile)
+
+> **Note**: Automated bundle-size check (T033) is a proxy. Full TTI measurement is deferred
+> to a dedicated performance feature. When that work is scoped, add a Lighthouse CI step
+> targeting a simulated "Slow 4G" mobile profile and assert TTI < 2 000 ms.
+
+Manual proxy check in DevTools:
+
+1. Open DevTools → Network → throttle to "Slow 4G"
+2. Hard-reload (`Ctrl+Shift+R`)
+3. Verify the app is interactive (bottom nav tappable) within 2 seconds
+
+- [ ] TTI < 2s on Slow 4G profile *(pass/fail)*
+
+### SC-004 — 320px–1920px no horizontal scrolling
+
+Using DevTools responsive mode:
+
+- [ ] 320px width — no horizontal scrollbar, all content visible
+- [ ] 375px (iPhone SE) — layout correct
+- [ ] 768px (tablet) — layout correct
+- [ ] 1024px (breakpoint) — sidebar visible, no bottom nav
+- [ ] 1920px — content not stretched or cramped

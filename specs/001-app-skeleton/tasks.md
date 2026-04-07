@@ -32,7 +32,7 @@ implementation and testing of each story.
 
 **Purpose**: Install Angular Material and configure the project for shell development.
 
-- [ ] T001 Install Angular Material via schematic — run `ng add @angular/material` (updates `package.json`, `src/styles.css`, `src/index.html`, `src/app/app.config.ts`). After it completes, verify what the schematic wrote before executing T002/T003 — skip any step already done by the schematic.
+- [X] T001 Install Angular Material via schematic — run `ng add @angular/material` (updates `package.json`, `src/styles.css`, `src/index.html`, `src/app/app.config.ts`). After it completes, verify what the schematic wrote before executing T002/T003 — skip any step already done by the schematic.
 - [X] T002 [P] Configure custom Angular Material theme and typography in `src/styles.css`
 - [X] T003 [P] Add `provideAnimationsAsync()` to providers in `src/app/app.config.ts`
 
@@ -72,10 +72,10 @@ scroll up to confirm it reappears.
 - [X] T011 [P] [US1] Add `MatToolbar` to `ShellComponent` with "Happie" title in `src/app/layout/shell/shell.html`
 - [X] T012 [P] [US1] Implement `isScrolledDown` signal in `ShellComponent` using CDK `ScrollDispatcher` to detect scroll direction in `src/app/layout/shell/shell.ts`
 - [X] T013 [US1] Apply `[class.toolbar-hidden]="isScrolledDown()"` binding directly on the `<mat-toolbar>` element in `src/app/layout/shell/shell.html`, and add `transform: translateY(-100%)` transition CSS for `.toolbar-hidden` in `src/app/layout/shell/shell.css`
-- [X] T014 [US1] Implement `activeSection` signal derived from `Router` navigation events matching against `NAV_SECTIONS` in `src/app/layout/shell/shell.ts`
+- [X] T014 [US1] Implement `activeSection` signal derived from `Router` navigation events matching against `NAV_SECTIONS` in `src/app/layout/shell/shell.ts` *(superseded: refactored to `routerLinkActive` + `#rla` template variables — manual signal removed)*
 - [X] T015 [US1] Add `MatTabNavBar` bottom navigation with three `MatTabLink` items (Home, Shopping, Tasks) and `mat-icon` icons in `src/app/layout/shell/shell.html`
 - [X] T016 [US1] Style bottom navigation fixed at bottom, full-width, with minimum 44×44px touch targets in `src/app/layout/shell/shell.css`
-- [X] T017 [US1] Bind `[active]` on each `MatTabLink` to `activeSection()?.id` comparison in `src/app/layout/shell/shell.html`
+- [X] T017 [US1] Bind `[active]` on each `MatTabLink` to `activeSection()?.id` comparison in `src/app/layout/shell/shell.html` *(superseded: refactored to `routerLinkActive #bottomRla` + `[active]="bottomRla.isActive"` — router drives active state directly)*
 
 **Checkpoint**: User Story 1 is fully functional — mobile nav and scroll-away toolbar work independently.
 
